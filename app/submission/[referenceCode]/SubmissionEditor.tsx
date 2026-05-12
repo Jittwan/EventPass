@@ -19,7 +19,7 @@ type Initial = {
 };
 
 const fieldClass =
-  "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500";
+  "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
 const labelClass = "block text-sm font-medium text-slate-700";
 
 function formatBytes(n: number) {
@@ -160,7 +160,7 @@ export function SubmissionEditor({ initial }: { initial: Initial }) {
           <div
             className={`mt-4 rounded-md px-3 py-2 text-sm ${
               message.kind === "ok"
-                ? "border border-emerald-200 bg-emerald-50 text-emerald-800"
+                ? "border border-pink-200 bg-pink-50 text-pink-800"
                 : "border border-rose-200 bg-rose-50 text-rose-700"
             }`}
           >
@@ -189,7 +189,7 @@ export function SubmissionEditor({ initial }: { initial: Initial }) {
           <button
             type="submit"
             disabled={saving}
-            className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-60"
+            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-60"
           >
             {saving ? "Saving…" : "Save changes"}
           </button>
@@ -207,7 +207,7 @@ export function SubmissionEditor({ initial }: { initial: Initial }) {
             multiple
             disabled={uploading}
             onChange={(e) => uploadFiles(e.target.files)}
-            className="mt-1 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-slate-800 disabled:opacity-60"
+            className="mt-1 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-blue-600 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-blue-700 disabled:opacity-60"
           />
           {uploading && <p className="mt-1 text-xs text-slate-500">Uploading…</p>}
         </label>
@@ -230,7 +230,7 @@ export function SubmissionEditor({ initial }: { initial: Initial }) {
                 <p className="text-xs text-slate-500">{formatBytes(d.size)}</p>
               </div>
               <div className="flex items-center gap-2">
-                <label className="cursor-pointer rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100">
+                <label className="cursor-pointer rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-blue-50">
                   {replacing === d.id ? "Replacing…" : "Replace"}
                   <input
                     type="file"

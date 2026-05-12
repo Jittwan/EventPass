@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 const fieldClass =
-  "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500";
+  "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
 const labelClass = "block text-sm font-medium text-slate-700";
 
 function formatBytes(n: number) {
@@ -132,7 +132,7 @@ export function RegisterForm() {
           type="file"
           multiple
           onChange={onFileChange}
-          className="mt-1 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-slate-800"
+          className="mt-1 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-blue-600 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-blue-700"
         />
         <p className="mt-1 text-xs text-slate-500">Max 10 MB per file. PDF, images, Word, or text. You can pick more than once — files stack up.</p>
 
@@ -160,7 +160,7 @@ export function RegisterForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full rounded-md bg-slate-900 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-60"
+        className="w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-60"
       >
         {submitting ? "Submitting…" : "Submit registration"}
       </button>

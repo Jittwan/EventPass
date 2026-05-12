@@ -40,7 +40,7 @@ export default async function AdminDetailPage({
           </div>
           <a
             href={`/api/admin/registrations/${registration.id}/badge`}
-            className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-slate-800"
+            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
           >
             Download name tag PDF
           </a>
@@ -75,7 +75,7 @@ export default async function AdminDetailPage({
                     target="_blank"
                     rel="noreferrer"
                     download={d.originalName}
-                    className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100"
+                    className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-blue-50"
                   >
                     Download
                   </a>

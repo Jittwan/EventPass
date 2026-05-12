@@ -67,12 +67,12 @@ export function AdminRegistrationsList() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search name, email, phone, reference…"
-            className="w-72 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+            className="w-72 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
           <button
             type="button"
             onClick={handleLogout}
-            className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"
+            className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-blue-50"
           >
             Sign out
           </button>
@@ -87,7 +87,7 @@ export function AdminRegistrationsList() {
 
       <div className="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         <table className="min-w-full divide-y divide-slate-200 text-sm">
-          <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+          <thead className="bg-pink-50 text-xs uppercase tracking-wide text-pink-700">
             <tr>
               <th className="px-4 py-3 text-left">Reference</th>
               <th className="px-4 py-3 text-left">Name</th>
@@ -114,7 +114,7 @@ export function AdminRegistrationsList() {
             )}
             {!loading &&
               rows.map((r) => (
-                <tr key={r.id} className="hover:bg-slate-50">
+                <tr key={r.id} className="hover:bg-blue-50">
                   <td className="px-4 py-3">
                     <Link
                       href={`/admin/registrations/${r.id}`}
