@@ -8,6 +8,16 @@ import { saveUpload } from "@/lib/uploads";
 export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
+  try {
+    return await handleRegister(request);
+  } catch (err) {
+    console.error("/api/register failed", err);
+    const message = err instanceof Error ? err.message : "Unknown server error";
+    return Response.json({ error: `Server error: ${message}` }, { status: 500 });
+  }
+}
+
+async function handleRegister(request: NextRequest) {
   const form = await request.formData();
 
   const parsed = registrationSchema.safeParse({

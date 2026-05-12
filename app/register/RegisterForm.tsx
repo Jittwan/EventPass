@@ -55,9 +55,16 @@ export function RegisterForm() {
 
     try {
       const res = await fetch("/api/register", { method: "POST", body: formData });
-      const body = await res.json().catch(() => ({}));
+      const text = await res.text();
+      let body: { error?: string; fields?: Record<string, string>; referenceCode?: string } = {};
+      try {
+        body = text ? JSON.parse(text) : {};
+      } catch {
+        body = {};
+      }
       if (!res.ok) {
-        setError(body.error ?? "Submission failed");
+        const detail = body.error ?? (text ? text.slice(0, 200) : "no body");
+        setError(`Submission failed (HTTP ${res.status}): ${detail}`);
         setFieldErrors(body.fields ?? {});
         setSubmitting(false);
         return;
