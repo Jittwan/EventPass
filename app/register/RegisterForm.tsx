@@ -1,17 +1,47 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const fieldClass =
   "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500";
 const labelClass = "block text-sm font-medium text-slate-700";
 
+function formatBytes(n: number) {
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+  return `${(n / 1024 / 1024).toFixed(2)} MB`;
+}
+
 export function RegisterForm() {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [files, setFiles] = useState<File[]>([]);
+
+  function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const incoming = Array.from(e.target.files ?? []);
+    if (incoming.length === 0) return;
+    setFiles((prev) => {
+      const seen = new Set(prev.map((f) => `${f.name}|${f.size}|${f.lastModified}`));
+      const next = [...prev];
+      for (const f of incoming) {
+        const key = `${f.name}|${f.size}|${f.lastModified}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          next.push(f);
+        }
+      }
+      return next;
+    });
+    e.target.value = "";
+  }
+
+  function removeFile(idx: number) {
+    setFiles((f) => f.filter((_, i) => i !== idx));
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -20,6 +50,9 @@ export function RegisterForm() {
     setFieldErrors({});
 
     const formData = new FormData(e.currentTarget);
+    formData.delete("documents");
+    for (const f of files) formData.append("documents", f);
+
     try {
       const res = await fetch("/api/register", { method: "POST", body: formData });
       const body = await res.json().catch(() => ({}));
@@ -93,13 +126,35 @@ export function RegisterForm() {
       <div>
         <label className={labelClass} htmlFor="documents">Documents (optional, multiple)</label>
         <input
+          ref={fileInputRef}
           id="documents"
           name="documents"
           type="file"
           multiple
+          onChange={onFileChange}
           className="mt-1 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-slate-800"
         />
-        <p className="mt-1 text-xs text-slate-500">Max 10 MB per file. PDF, images, Word, or text.</p>
+        <p className="mt-1 text-xs text-slate-500">Max 10 MB per file. PDF, images, Word, or text. You can pick more than once — files stack up.</p>
+
+        {files.length > 0 && (
+          <ul className="mt-3 divide-y divide-slate-200 rounded-md border border-slate-200 bg-white">
+            {files.map((f, i) => (
+              <li key={`${f.name}-${f.lastModified}-${i}`} className="flex items-center justify-between gap-3 px-3 py-2">
+                <div className="min-w-0">
+                  <p className="truncate text-sm text-slate-900">{f.name}</p>
+                  <p className="text-xs text-slate-500">{formatBytes(f.size)}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeFile(i)}
+                  className="rounded-md border border-rose-300 bg-white px-2.5 py-1 text-xs font-medium text-rose-700 hover:bg-rose-50"
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <button
