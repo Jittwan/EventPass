@@ -1,36 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EventPass
 
-## Getting Started
+Full-stack event registration system built with Next.js (App Router), Prisma, Tailwind, and zod.
 
-First, run the development server:
+- Registration with file uploads
+- Returning user sign-in via reference code + password
+- Admin dashboard with search & per-attendee detail
+- PDF name-tag generation
+
+## Stack
+
+- Next.js 16 (App Router) + TypeScript
+- Prisma ORM with SQLite for local dev, PostgreSQL-ready for production
+- Tailwind CSS v4
+- bcryptjs for password hashing
+- zod for validation
+- @react-pdf/renderer for badge PDFs
+- Vitest for tests
+
+## Quick start
 
 ```bash
+npm install
+cp .env.example .env       # adjust as needed
+npx prisma migrate dev     # creates prisma/dev.db
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App runs at http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the dev server |
+| `npm run build` | Generate Prisma client + production build |
+| `npm start` | Run the production build |
+| `npm test` | Run the Vitest test suite |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run lint` | Lint the project |
 
-## Learn More
+## Environment variables
 
-To learn more about Next.js, take a look at the following resources:
+See `.env.example` for the canonical list.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Var | Purpose |
+| --- | --- |
+| `DATABASE_URL` | SQLite path for local dev (`file:./dev.db`) or Postgres URL for prod |
+| `ADMIN_USERNAME` | Admin login username (used by `/admin/login`) |
+| `ADMIN_PASSWORD` | Admin login password |
+| `SESSION_SECRET` | HMAC key for signing session cookies (≥ 32 random chars recommended) |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Generate a session secret with:
 
-## Deploy on Vercel
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/
+  api/                       # Route handlers (POST /api/register, etc.)
+  admin/                     # Admin pages (/admin/login, /admin/registrations)
+  register/                  # Public registration flow
+  lookup/                    # Returning-user sign-in
+  submission/[referenceCode] # Returning-user edit screen
+lib/                         # db, validation, session, uploads, badge PDF
+prisma/                      # schema + migrations
+public/uploads/              # files saved during dev (one folder per registration)
+tests/                       # Vitest tests
+```
+
+## Routes
+
+| Page | Purpose |
+| --- | --- |
+| `/` | Landing page |
+| `/register` | Public registration form |
+| `/register/success/[referenceCode]` | Confirmation screen |
+| `/lookup` | Returning-user sign-in |
+| `/submission/[referenceCode]` | View / edit own registration |
+| `/admin/login` | Admin sign-in |
+| `/admin/registrations` | Admin list with search |
+| `/admin/registrations/[id]` | Admin detail + PDF badge |
+
+| API | Method |
+| --- | --- |
+| `/api/register` | POST (multipart, includes files) |
+| `/api/lookup` | POST |
+| `/api/submission/[referenceCode]` | GET, PUT |
+| `/api/submission/[referenceCode]/documents` | POST (multipart) |
+| `/api/documents/[id]` | DELETE |
+| `/api/admin/login` | POST |
+| `/api/admin/logout` | POST |
+| `/api/admin/registrations` | GET (supports `?q=` search) |
+| `/api/admin/registrations/[id]` | GET |
+| `/api/admin/registrations/[id]/badge` | GET (returns PDF) |
+
+## Deploying to Vercel
+
+1. Provision a Postgres database (Vercel Postgres, Neon, Supabase, etc.) and copy its connection URL.
+2. Edit `prisma/schema.prisma` and change the provider:
+
+   ```prisma
+   datasource db {
+     provider = "postgresql"
+     url      = env("DATABASE_URL")
+   }
+   ```
+
+   then run `npx prisma migrate dev --name init_postgres` against the new database to generate fresh migrations.
+
+3. In the Vercel project settings, set the env vars:
+
+   - `DATABASE_URL` — the Postgres URL
+   - `ADMIN_USERNAME`
+   - `ADMIN_PASSWORD`
+   - `SESSION_SECRET`
+
+4. Add a build hook so the schema is migrated before each deploy. Either:
+
+   - Set the **Build Command** to `npx prisma migrate deploy && npm run build`, **or**
+   - Run `npx prisma migrate deploy` manually after each schema change.
+
+   The `postinstall` script already regenerates the Prisma client.
+
+5. Deploy. The Next.js routes are dynamic by default (they access the DB / cookies).
+
+> **Note on file uploads:** uploaded files are written to `public/uploads/`. Vercel's serverless filesystem is read-only, so for production you should swap `lib/uploads.ts` to use an object store (S3, Vercel Blob, etc.). The current implementation is intended for local development.
+
+## Notes & decisions
+
+- **Reference codes** are `EP-XXXXXXXX` over a 32-char unambiguous alphabet (no `0/O/1/I/L`).
+- **Sessions** are HMAC-signed cookies (`eventpass_admin`, `eventpass_user`) signed with `SESSION_SECRET`. They expire after 8 hours.
+- **Admin credentials** are read from env at request time — they are not stored in the DB.
+- **Tests** cover reference-code format & uniqueness, validation, password hashing, returning-user authentication, admin env-credentials, and PDF badge content type.

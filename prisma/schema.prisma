@@ -1,0 +1,43 @@
+// For local development we use SQLite. To deploy to Vercel with Postgres,
+// change `provider = "sqlite"` to `provider = "postgresql"` and re-run
+// `npx prisma migrate deploy`. The rest of the schema is portable.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Registration {
+  id                 String     @id @default(cuid())
+  referenceCode      String     @unique
+  fullName           String
+  email              String
+  phone              String
+  organization       String
+  position           String
+  dietaryRequirement String
+  passwordHash       String
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  documents          Document[]
+
+  @@index([email])
+}
+
+model Document {
+  id             String       @id @default(cuid())
+  registrationId String
+  fileName       String
+  originalName   String
+  filePath       String
+  mimeType       String
+  size           Int
+  createdAt      DateTime     @default(now())
+  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  @@index([registrationId])
+}
