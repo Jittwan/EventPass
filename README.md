@@ -2,7 +2,7 @@
 
 Full-stack event registration system built with Next.js (App Router), Prisma, Tailwind, and zod.
 
-- Registration with file uploads
+- Registration (name, email, phone, password) with file uploads
 - Returning user sign-in via reference code + password
 - Admin dashboard with search & per-attendee detail
 - PDF name-tag generation

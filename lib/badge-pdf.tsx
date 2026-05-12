@@ -27,12 +27,6 @@ const styles = StyleSheet.create({
     fontFamily: "Helvetica-Bold",
     textAlign: "center",
     marginTop: 16,
-    marginBottom: 8,
-  },
-  org: {
-    fontSize: 16,
-    textAlign: "center",
-    color: "#444",
     marginBottom: 24,
   },
   refRow: {
@@ -48,12 +42,11 @@ const styles = StyleSheet.create({
 
 export type BadgeData = {
   fullName: string;
-  organization: string;
   referenceCode: string;
   generatedAt: Date;
 };
 
-export function BadgeDocument({ fullName, organization, referenceCode, generatedAt }: BadgeData) {
+export function BadgeDocument({ fullName, referenceCode, generatedAt }: BadgeData) {
   const dateStr = generatedAt.toISOString().slice(0, 10);
   return (
     <Document title={`EventPass Badge — ${referenceCode}`}>
@@ -61,7 +54,6 @@ export function BadgeDocument({ fullName, organization, referenceCode, generated
         <View style={styles.card}>
           <Text style={styles.header}>EVENTPASS</Text>
           <Text style={styles.name}>{fullName}</Text>
-          <Text style={styles.org}>{organization}</Text>
           <View style={styles.refRow}>
             <View>
               <Text style={styles.label}>Reference</Text>

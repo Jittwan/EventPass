@@ -5,7 +5,6 @@ describe("badge PDF renderer", () => {
   it("produces a PDF byte buffer with the %PDF- magic header", async () => {
     const buf = await renderBadgePdf({
       fullName: "Ada Lovelace",
-      organization: "Analytical Engine Co.",
       referenceCode: "EP-23456789",
       generatedAt: new Date("2026-05-12T00:00:00Z"),
     });
@@ -18,7 +17,6 @@ describe("badge endpoint content type", () => {
   it("simulating the endpoint, returns application/pdf headers", async () => {
     const pdf = await renderBadgePdf({
       fullName: "Ada Lovelace",
-      organization: "Analytical Engine Co.",
       referenceCode: "EP-23456789",
       generatedAt: new Date(),
     });

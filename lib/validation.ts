@@ -5,9 +5,6 @@ export const registrationSchema = z
     fullName: z.string().trim().min(2, "Full name is required").max(120),
     email: z.string().trim().toLowerCase().email("Invalid email address"),
     phone: z.string().trim().min(5, "Phone is required").max(40),
-    organization: z.string().trim().min(1, "Organization is required").max(200),
-    position: z.string().trim().min(1, "Position is required").max(200),
-    dietaryRequirement: z.string().trim().max(200).default(""),
     password: z.string().min(8, "Password must be at least 8 characters").max(200),
     confirmPassword: z.string(),
   })
@@ -22,9 +19,6 @@ export const updateRegistrationSchema = z.object({
   fullName: z.string().trim().min(2).max(120),
   email: z.string().trim().toLowerCase().email(),
   phone: z.string().trim().min(5).max(40),
-  organization: z.string().trim().min(1).max(200),
-  position: z.string().trim().min(1).max(200),
-  dietaryRequirement: z.string().trim().max(200).default(""),
 });
 
 export type UpdateRegistrationInput = z.infer<typeof updateRegistrationSchema>;

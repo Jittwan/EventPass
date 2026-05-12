@@ -26,9 +26,6 @@ export default async function SubmissionPage({
     fullName: registration.fullName,
     email: registration.email,
     phone: registration.phone,
-    organization: registration.organization,
-    position: registration.position,
-    dietaryRequirement: registration.dietaryRequirement,
     documents: registration.documents.map((d) => ({
       id: d.id,
       originalName: d.originalName,

@@ -30,7 +30,6 @@ export async function GET(request: NextRequest) {
       fullName: true,
       email: true,
       phone: true,
-      organization: true,
       createdAt: true,
       _count: { select: { documents: true } },
     },

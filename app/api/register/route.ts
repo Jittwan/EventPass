@@ -14,9 +14,6 @@ export async function POST(request: NextRequest) {
     fullName: form.get("fullName"),
     email: form.get("email"),
     phone: form.get("phone"),
-    organization: form.get("organization"),
-    position: form.get("position"),
-    dietaryRequirement: form.get("dietaryRequirement") ?? "",
     password: form.get("password"),
     confirmPassword: form.get("confirmPassword"),
   });
@@ -52,9 +49,6 @@ export async function POST(request: NextRequest) {
       fullName: data.fullName,
       email: data.email,
       phone: data.phone,
-      organization: data.organization,
-      position: data.position,
-      dietaryRequirement: data.dietaryRequirement,
       passwordHash,
     },
   });

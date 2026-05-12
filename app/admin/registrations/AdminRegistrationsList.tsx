@@ -10,7 +10,6 @@ type Row = {
   fullName: string;
   email: string;
   phone: string;
-  organization: string;
   createdAt: string;
   _count: { documents: number };
 };
@@ -94,7 +93,6 @@ export function AdminRegistrationsList() {
               <th className="px-4 py-3 text-left">Name</th>
               <th className="px-4 py-3 text-left">Email</th>
               <th className="px-4 py-3 text-left">Phone</th>
-              <th className="px-4 py-3 text-left">Organization</th>
               <th className="px-4 py-3 text-left">Docs</th>
               <th className="px-4 py-3 text-left">Created</th>
             </tr>
@@ -102,14 +100,14 @@ export function AdminRegistrationsList() {
           <tbody className="divide-y divide-slate-100">
             {loading && (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-sm text-slate-500">
+                <td colSpan={6} className="px-4 py-8 text-center text-sm text-slate-500">
                   Loading…
                 </td>
               </tr>
             )}
             {!loading && rows.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-sm text-slate-500">
+                <td colSpan={6} className="px-4 py-8 text-center text-sm text-slate-500">
                   No registrations match.
                 </td>
               </tr>
@@ -128,7 +126,6 @@ export function AdminRegistrationsList() {
                   <td className="px-4 py-3">{r.fullName}</td>
                   <td className="px-4 py-3 text-slate-600">{r.email}</td>
                   <td className="px-4 py-3 text-slate-600">{r.phone}</td>
-                  <td className="px-4 py-3 text-slate-600">{r.organization}</td>
                   <td className="px-4 py-3 text-slate-600">{r._count.documents}</td>
                   <td className="px-4 py-3 text-slate-500">
                     {new Date(r.createdAt).toLocaleString()}

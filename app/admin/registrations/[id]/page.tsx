@@ -51,9 +51,6 @@ export default async function AdminDetailPage({
           <dl className="mt-4 grid grid-cols-1 gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
             <Row label="Email" value={registration.email} />
             <Row label="Phone" value={registration.phone} />
-            <Row label="Organization" value={registration.organization} />
-            <Row label="Position" value={registration.position} />
-            <Row label="Dietary requirement" value={registration.dietaryRequirement || "—"} />
             <Row label="Registered" value={new Date(registration.createdAt).toLocaleString()} />
             <Row label="Last updated" value={new Date(registration.updatedAt).toLocaleString()} />
           </dl>

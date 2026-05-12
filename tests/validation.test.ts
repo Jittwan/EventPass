@@ -5,9 +5,6 @@ const valid = {
   fullName: "Ada Lovelace",
   email: "ada@example.com",
   phone: "+1 555 1234",
-  organization: "Analytical Engine Co.",
-  position: "Mathematician",
-  dietaryRequirement: "none",
   password: "supersecret",
   confirmPassword: "supersecret",
 };
@@ -34,9 +31,11 @@ describe("registrationSchema", () => {
 
     const r2 = registrationSchema.safeParse({ ...valid, phone: "" });
     expect(r2.success).toBe(false);
+    if (!r2.success) expect(flattenZodError(r2.error).phone).toBeDefined();
 
-    const r3 = registrationSchema.safeParse({ ...valid, organization: "" });
+    const r3 = registrationSchema.safeParse({ ...valid, email: "" });
     expect(r3.success).toBe(false);
+    if (!r3.success) expect(flattenZodError(r3.error).email).toBeDefined();
   });
 
   it("rejects when passwords do not match", () => {

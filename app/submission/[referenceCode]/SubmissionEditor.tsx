@@ -15,9 +15,6 @@ type Initial = {
   fullName: string;
   email: string;
   phone: string;
-  organization: string;
-  position: string;
-  dietaryRequirement: string;
   documents: DocumentSummary[];
 };
 
@@ -37,9 +34,6 @@ export function SubmissionEditor({ initial }: { initial: Initial }) {
     fullName: initial.fullName,
     email: initial.email,
     phone: initial.phone,
-    organization: initial.organization,
-    position: initial.position,
-    dietaryRequirement: initial.dietaryRequirement,
   });
   const [docs, setDocs] = useState<DocumentSummary[]>(initial.documents);
   const [saving, setSaving] = useState(false);
@@ -191,23 +185,6 @@ export function SubmissionEditor({ initial }: { initial: Initial }) {
               <input id="phone" required className={fieldClass} value={form.phone}
                 onChange={(e) => update("phone", e.target.value)} />
             </div>
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label className={labelClass} htmlFor="organization">Organization</label>
-              <input id="organization" required className={fieldClass} value={form.organization}
-                onChange={(e) => update("organization", e.target.value)} />
-            </div>
-            <div>
-              <label className={labelClass} htmlFor="position">Position</label>
-              <input id="position" required className={fieldClass} value={form.position}
-                onChange={(e) => update("position", e.target.value)} />
-            </div>
-          </div>
-          <div>
-            <label className={labelClass} htmlFor="dietaryRequirement">Dietary requirement</label>
-            <input id="dietaryRequirement" className={fieldClass} value={form.dietaryRequirement}
-              onChange={(e) => update("dietaryRequirement", e.target.value)} />
           </div>
           <button
             type="submit"

@@ -12,18 +12,15 @@ datasource db {
 }
 
 model Registration {
-  id                 String     @id @default(cuid())
-  referenceCode      String     @unique
-  fullName           String
-  email              String
-  phone              String
-  organization       String
-  position           String
-  dietaryRequirement String
-  passwordHash       String
-  createdAt          DateTime   @default(now())
-  updatedAt          DateTime   @updatedAt
-  documents          Document[]
+  id            String     @id @default(cuid())
+  referenceCode String     @unique
+  fullName      String
+  email         String
+  phone         String
+  passwordHash  String
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  documents     Document[]
 
   @@index([email])
 }

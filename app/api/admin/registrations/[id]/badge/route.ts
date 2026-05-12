@@ -15,13 +15,12 @@ export async function GET(
   const { id } = await ctx.params;
   const registration = await prisma.registration.findUnique({
     where: { id },
-    select: { fullName: true, organization: true, referenceCode: true },
+    select: { fullName: true, referenceCode: true },
   });
   if (!registration) return Response.json({ error: "Not found" }, { status: 404 });
 
   const pdf = await renderBadgePdf({
     fullName: registration.fullName,
-    organization: registration.organization,
     referenceCode: registration.referenceCode,
     generatedAt: new Date(),
   });

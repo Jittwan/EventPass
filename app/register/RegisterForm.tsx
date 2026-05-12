@@ -72,30 +72,6 @@ export function RegisterForm() {
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
-          <label className={labelClass} htmlFor="organization">Organization</label>
-          <input id="organization" name="organization" required className={fieldClass} />
-          {err("organization")}
-        </div>
-        <div>
-          <label className={labelClass} htmlFor="position">Position</label>
-          <input id="position" name="position" required className={fieldClass} />
-          {err("position")}
-        </div>
-      </div>
-
-      <div>
-        <label className={labelClass} htmlFor="dietaryRequirement">Dietary requirement</label>
-        <input
-          id="dietaryRequirement"
-          name="dietaryRequirement"
-          placeholder="e.g. vegetarian, halal, none"
-          className={fieldClass}
-        />
-        {err("dietaryRequirement")}
-      </div>
-
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <div>
           <label className={labelClass} htmlFor="password">Password</label>
           <input id="password" name="password" type="password" required minLength={8} className={fieldClass} />
           {err("password")}

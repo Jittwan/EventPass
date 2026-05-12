@@ -54,9 +54,6 @@ export async function PUT(
         fullName: true,
         email: true,
         phone: true,
-        organization: true,
-        position: true,
-        dietaryRequirement: true,
         updatedAt: true,
       },
     });
